@@ -1,0 +1,198 @@
+
+
+body {
+    font-family: Helvetica Neue;
+    font-weight: 200;
+    margin: 0;
+    padding: 0;
+    }
+
+
+
+body {
+    font-weight: 200;
+    font-size: 12px;
+    margin: 0;
+    padding: 0;
+    }
+
+#enjoying-your-free-preview, #enjoying-this-issue, #thank-you-for-subscribing {
+
+    position: absolute;
+    display: inline-block;
+    left: 200px;
+    top: 755px;
+    width: 368px;
+    height:34px;
+    padding:9px 0px;
+    color: #4d4d4d;
+	text-align: center;
+    font-size: 17px;
+    line-height: 24px;
+    font-weight: bold;
+    font-weight:400;
+    font-family: Marion Regular;
+
+}
+
+
+/* Row which horizontally centers subscribe-today-and-save. */
+.row {
+    width: 100%;
+    text-align: center;
+}
+
+
+/* The subscribe button. */
+#subscribe-today-and-save {
+	background:#fff200;
+    display:block;
+    font-weight: 400;
+    color:#000;
+    font-size:12px;
+    text-transform: uppercase;
+    text-decoration:none;
+    top: 840px;
+    left:261px;
+    position: fixed;
+    font-family: Marion Regular;
+	text-align: center;
+    width: 246px;
+    padding-top:10px;
+    padding-bottom:10px
+    }
+    
+
+/* Down state for the subscribe button. */
+#subscribe-today-and-save:active {
+    background-color:#999;
+}
+
+
+
+/* modal background for the subscribe dialog. */
+.modal-background {
+    width: 100%;
+    height: 100%;
+	background: rgba(0, 0, 0, .3);
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    z-index: 9;
+	display: -webkit-flex;
+	-webkit-flex-align: center;
+}
+
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+/* Styles for the dialogs. */
+#subscribe-dialog {
+margin: auto;
+width: 240px;
+padding: 10px 10px 10px 10px;
+z-index: 10;
+background: rgba(255, 255, 255, .92);
+color: #FFFFFF;
+text-align: center;
+-webkit-border-radius: 5px;
+opacity: .92;
+}
+
+#subscribe-dialog #title {
+margin: 0;
+margin-bottom: 10px;
+font-size: 16px;
+text-align:left;
+font-weight: bold;
+text-align: center;
+width: 330px;
+}
+
+#subscribe-dialog #sub-title {
+font-size: 17px;
+font-weight: bold;
+margin: 20px 0px 0 0 ;
+text-align: center;
+line-height: 120%;
+color: #000000;
+}
+
+#subscribe-dialog #description {
+font-size: 15px;
+margin: 0px 0px 20px;
+text-align: center;
+line-height: 120%;
+color: #000000;
+}
+
+#subscribe-dialog button {
+color:#157EFB;
+height: 35px;
+font-style: bold;
+white-space: nowrap;
+text-align: center;
+font: bold 16px;
+}
+
+#subscribe-dialog button:active {
+color: rgba(21,126,251, .5);
+}
+
+#subscribe-dialog {
+width: 330px;
+margin: auto;
+padding: 0px;
+}
+
+#subscribe-dialog #description {
+padding: 15px;
+margin-bottom: 10px;
+}
+
+#subscribe-dialog .subscribe-button {
+border-top: 1px solid #9BA0A3;
+color:#157EFB;
+font-size:16px;
+display:block;
+padding: 12px;
+}
+
+#subscribe-dialog .subscribe-button:active {
+color: rgba(21,126,251, .5);
+}
+
+#subscribe-dialog .subscribe-dialog-button {
+color:#157EFB;
+/* font: bold 16px; */
+font-weight: bold;
+font-size: 16px;
+border-top: 1px solid #9BA0A3;
+padding: 12px;
+}
+
+#subscribe-dialog .subscribe-dialog-button:active {
+color: rgba(21,126,251, .5);
+}
+
+
+
+
+
+
+
+
+

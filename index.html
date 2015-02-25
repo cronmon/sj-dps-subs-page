@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Smith Journal Subscribe Web Overlay</title>
+<link type="text/css" href="style.css" rel="stylesheet" />
+
+<!-- <script src="AdobeReadingAPI.js"></script> -->
+
+<!-- jQuery library. -->
+<script src="jquery-1.8.3.min.js"></script>
+
+<script>
+
+$(document).ready(function() {
+
+//	var isiPad = /(iPad).*AppleWebKit(?!.*Safari)/i.test(navigator.userAgent);
+	var isiPad = (navigator.userAgent.match(/iPad/i) !== null);
+
+	if (isiPad)
+	{	
+
+	$('<script src="AdobeReadingAPI.js">').appendTo('body');
+
+
+		var $subscribeDialog;
+		var subscriptionsHTML = "";
+		
+		// Add a callback for when the API is ready.
+		// The API should not be used until this callback is triggered.
+		adobeDPS.initializationComplete.addOnce(function() {
+			// Check if the user currently has an active subscription.
+			if (adobeDPS.subscriptionService.activeSubscription !== null) {
+				// The user has an active subscription so display a message saying thank you.
+				displayThankYouForSubscribing();
+			} else {
+				var currentFolio = adobeDPS.readingService.currentFolio;
+				var currentFolioState = currentFolio.entitlementType; 
+				var entitlementTypes = adobeDPS.subscriptionService.entitlementTypes;
+				
+				switch (currentFolioState) {
+					case entitlementTypes.UNKNOWN:
+					case entitlementTypes.FREE:
+					case entitlementTypes.PROMOTIONAL:
+					case entitlementTypes.SINGLE:
+						displaySubscriptionButton(true); // Show the messaging for a free preview.
+						break;
+					case entitlementTypes.SUBSCRIPTION:
+					case entitlementTypes.THIRD_PARTY:
+						displaySubscriptionButton(false); // Not a free preview so don't show free preview messaging.
+						break;
+				}
+				
+				// Loop through the subscriptions and create an HTML string to display in the subscribe dialog.
+				// The string will be the subscription buttons.
+				var availableSubscriptions = adobeDPS.subscriptionService.availableSubscriptions;
+				for (var s in availableSubscriptions) {
+					var availableSubscription = availableSubscriptions[s];
+					subscriptionsHTML += "<div class='subscribe-button' id='" + availableSubscription.productId + "'>" + availableSubscription.duration + " subscription for " + availableSubscription.price + "</div>";
+				}
+			}
+		}, this);
+	
+		function displaySubscriptionButton(isFreePreview) {
+			// if (isFreePreview)	// Free preview so display "Enjoying your free preview?"
+			//	$("body").append("<div id='enjoying-your-free-preview'>Save up to <strong>44%</strong> off the RRP and get the latest <br/><strong>Smith Journal</strong> issue downloaded automatically.</div>");
+		//	else				// Single issue purchase, subscription or 3rd party entitlement so display "Enjoying this issue?"
+			//	$("body").append("<div id='enjoying-this-issue'>Save up to <strong>44%</strong> off the RRP and get the latest <br/><strong>Smith Journal</strong> issue downloaded automatically?</div>");
+			
+			// Display the button at the bottom which displays the subscribe dialog.
+			$("body").append("<div class='row'><div id='enjoying-this-issue'>We hope you enjoyed the read. Subscribe to get <br/>the next volume delivered straight to your iPad.</div><div id='subscribe-today-and-save'>TAP HERE TO SUBSCRIBE</div></div>");
+			
+			$("#enjoying-this-issue, #subscribe-today-and-save").on("click", displaySubscribeDialog);
+		}
+		
+		function displaySubscribeDialog() {
+			var html  = "<div class='modal-background'>";
+				html +=		"<div id='subscribe-dialog'>";
+				html +=		"<p id='sub-title'>Subscribe to Smith Journal today.</p>";
+				html += 		"<p id='description'>Your digital subscription starts<br/>with the most recent issue.</p>";
+				html +=			subscriptionsHTML; // The string of subscription buttons.
+				html += 		"<div class='subscribe-dialog-button' id='cancel'>Cancel</div>";
+				html += 	"</div>";
+				html += "</div>";
+			
+			$subscribeDialog = $(html);
+			
+			// Add the dialog to the DOM.
+			$("body").append($subscribeDialog);
+			
+			// Handler to close the subscribe dialog.
+			$subscribeDialog.find("#cancel").on("click", function() { closeSubscribeDialog(); });
+			
+			// The handler for the individual subscription buttons.
+			$(".subscribe-button").on("click", function(e){ subscribe_clickHandler(e); });
+		}
+		
+		// Handler for when a user clicks a button to buy a subscription.
+		function subscribe_clickHandler(e) {
+			// The product id is set to the id of the element so get a reference to it.
+			var productId = $(e.currentTarget).attr("id");
+	
+			var transaction = adobeDPS.subscriptionService.availableSubscriptions[productId].purchase();
+			transaction.completedSignal.addOnce(function(transaction) {
+				if (transaction.state == adobeDPS.transactionManager.transactionStates.FINISHED) { // Subscription was successfully purchased.
+					$("#subscribe-today-and-save").remove();
+					displayThankYouForSubscribing();
+					
+					closeSubscribeDialog();
+				}
+			}, this);
+		}
+		
+		// Closes the subscribe dialog.
+		function closeSubscribeDialog() {
+			$subscribeDialog.find("#cancel").off();
+			$subscribeDialog.off();
+			$subscribeDialog.remove();
+		}
+		
+		function displayThankYouForSubscribing() {
+			$("body").append("<div class='row'><div id='subscribe-today-and-save' style='font-size:13px;'>THANK YOU FOR SUBSCRIBING!</div></div>");
+		}
+
+
+	}
+
+/*
+	else
+	{
+		$("body").append("<div class='row'><div id='enjoying-this-issue'>We hope you enjoyed the read. Be sure to grab the next digital issue, delivered straight to your fingertips.</div></div>");
+		
+	}
+*/
+
+});
+	
+</script>
+</head>
+<body>
+<div class='row'><div id='enjoying-this-issue'>We hope you enjoyed the read. Subscribe to get <br/>the next volume delivered straight to your iPad.</div><div id='subscribe-today-and-save'>TAP HERE TO SUBSCRIBE</div></div>
+</body>
+</html>
